@@ -8,6 +8,18 @@ While the preview server is running, connect the iPhone to the same Wi-Fi as thi
 
 ## Run
 
+### Cloudflare Workers deployment
+
+The repository includes `wrangler.jsonc` to deploy the built site as static assets. This prevents Wrangler's automatic framework setup from trying to rewrite `vite.config.ts`. No Cloudflare Vite plugin is needed for this browser-only prototype.
+
+In Cloudflare's Git-connected Worker settings use:
+
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy --config wrangler.jsonc`
+- Root directory: the folder containing `package.json` and `wrangler.jsonc` (leave blank if they are at the repository root)
+
+Commit and push `wrangler.jsonc` to the repository connected to Cloudflare, then retry deployment using the new commit. The Worker resource name is `hartlink`, matching the intended GitHub repository and Cloudflare Worker. Use that exact name when creating the new Worker.
+
 On Windows, double-click `Start Hartlink.cmd` in this folder. Keep its window open and use the **Local** address it prints. This starts the preview directly on your computer rather than inside the assistant's isolated execution session. The launcher starts at port 63472 and chooses another port if it is occupied. For an iPhone on the same Wi-Fi, use the printed **Network** address.
 
 Install dependencies with `npm install`. Build with `npm run build`. Serve the built app with `npx vite preview --host 0.0.0.0 --port 5173`.
